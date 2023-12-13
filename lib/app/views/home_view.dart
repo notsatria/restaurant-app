@@ -36,7 +36,7 @@ class _HomeViewState extends State<HomeView> {
             ),
             FutureBuilder<String>(
                 future: DefaultAssetBundle.of(context)
-                    .loadString('assets/local_restaurant.json'),
+                    .loadString('assets/json/local_restaurant.json'),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));

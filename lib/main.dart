@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:restaurant_app/app/models/restaurant_list.dart';
 import 'package:restaurant_app/app/views/home_view.dart';
 import 'package:restaurant_app/app/views/restaurant_detail_view.dart';
+import 'package:restaurant_app/app/views/splash_view.dart';
 
 void main() {
   runApp(const MainApp());
@@ -19,8 +20,9 @@ class MainApp extends StatelessWidget {
         visualDensity: VisualDensity.adaptivePlatformDensity,
         textTheme: GoogleFonts.openSansTextTheme(),
       ),
-      initialRoute: HomeView.routeName,
+      initialRoute: SplashView.routeName,
       routes: {
+        SplashView.routeName: (context) => const SplashView(),
         HomeView.routeName: (context) => const HomeView(),
         RestaurantDetailView.routeName: (context) => RestaurantDetailView(
             restaurant:
