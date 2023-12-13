@@ -71,7 +71,7 @@ class RestaurantListItem extends StatelessWidget {
                         restaurant.name,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: robotoSemiBold.copyWith(fontSize: 18),
+                        style: openSansSemiBold.copyWith(fontSize: 18),
                       ),
                     ),
                     Expanded(
@@ -86,7 +86,7 @@ class RestaurantListItem extends StatelessWidget {
                           const SizedBox(width: 4.0),
                           Text(
                             restaurant.city,
-                            style: robotoRegular,
+                            style: openSansRegular,
                           )
                         ],
                       ),
@@ -103,7 +103,7 @@ class RestaurantListItem extends StatelessWidget {
                           const SizedBox(width: 4.0),
                           Text(
                             '${restaurant.rating}',
-                            style: robotoRegular,
+                            style: openSansRegular,
                           )
                         ],
                       ),

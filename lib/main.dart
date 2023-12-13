@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:restaurant_app/app/models/restaurant_list.dart';
 import 'package:restaurant_app/app/views/home_view.dart';
 import 'package:restaurant_app/app/views/restaurant_detail_view.dart';
+import 'package:restaurant_app/app/views/search_view.dart';
 import 'package:restaurant_app/app/views/splash_view.dart';
 
 void main() {
@@ -27,6 +28,7 @@ class MainApp extends StatelessWidget {
         RestaurantDetailView.routeName: (context) => RestaurantDetailView(
             restaurant:
                 ModalRoute.of(context)?.settings.arguments as Restaurant),
+        SearchView.routeName: (context) =>  SearchView( restaurantList:               ModalRoute.of(context)?.settings.arguments as RestaurantList),
       },
     );
   }

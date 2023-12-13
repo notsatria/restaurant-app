@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/app/theme/colors.dart';
+import 'package:restaurant_app/app/theme/sizes.dart';
 import 'package:restaurant_app/app/utils/asset.dart';
 import 'package:restaurant_app/app/views/home_view.dart';
 
@@ -22,11 +23,15 @@ class _SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
+    double maxWidth = getMaxWidth(context);
     return Scaffold(
       backgroundColor: secondaryLightColor,
       body: SafeArea(
         child: Center(
-          child: Image.asset(Asset.splash),
+          child: Image.asset(
+            Asset.splash,
+            width: maxWidth / 2,
+          ),
         ),
       ),
     );

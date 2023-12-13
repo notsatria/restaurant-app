@@ -17,7 +17,6 @@ class _RestaurantDetailViewState extends State<RestaurantDetailView> {
   bool isExpandedDescription = false;
   @override
   Widget build(BuildContext context) {
-    double maxWidth = getMaxWidth(context);
     double maxHeight = getMaxHeight(context);
     return Scaffold(
       body: SafeArea(
@@ -62,12 +61,12 @@ class _RestaurantDetailViewState extends State<RestaurantDetailView> {
                     children: [
                       Text(
                         widget.restaurant.name,
-                        style: robotoBold.copyWith(fontSize: 18),
+                        style: openSansBold.copyWith(fontSize: 18),
                       ),
                       const SizedBox(width: 6.0),
                       Text(
                         '(',
-                        style: robotoBold.copyWith(fontSize: 18),
+                        style: openSansBold.copyWith(fontSize: 18),
                       ),
                       const Icon(
                         Icons.star_rate_rounded,
@@ -76,7 +75,7 @@ class _RestaurantDetailViewState extends State<RestaurantDetailView> {
                       ),
                       Text(
                         '${widget.restaurant.rating})',
-                        style: robotoBold.copyWith(fontSize: 18),
+                        style: openSansBold.copyWith(fontSize: 18),
                       ),
                     ],
                   ),
@@ -91,7 +90,7 @@ class _RestaurantDetailViewState extends State<RestaurantDetailView> {
                       const SizedBox(width: 4.0),
                       Text(
                         widget.restaurant.city,
-                        style: robotoRegular.copyWith(fontSize: 16),
+                        style: openSansRegular.copyWith(fontSize: 16),
                       ),
                     ],
                   ),
@@ -100,7 +99,7 @@ class _RestaurantDetailViewState extends State<RestaurantDetailView> {
                   const SizedBox(height: marginSmall),
                   Text(
                     'Description',
-                    style: robotoSemiBold.copyWith(fontSize: 16),
+                    style: openSansSemiBold.copyWith(fontSize: 16),
                   ),
                   const SizedBox(height: marginSmall),
                   GestureDetector(
@@ -113,7 +112,7 @@ class _RestaurantDetailViewState extends State<RestaurantDetailView> {
                       widget.restaurant.description,
                       maxLines: isExpandedDescription ? 40 : 10,
                       overflow: TextOverflow.ellipsis,
-                      style: robotoRegular.copyWith(fontSize: 14),
+                      style: openSansRegular.copyWith(fontSize: 14),
                     ),
                   ),
                   const SizedBox(height: marginSmall),
@@ -121,12 +120,12 @@ class _RestaurantDetailViewState extends State<RestaurantDetailView> {
                   const SizedBox(height: marginSmall),
                   Text(
                     'Menu',
-                    style: robotoSemiBold.copyWith(fontSize: 16),
+                    style: openSansSemiBold.copyWith(fontSize: 16),
                   ),
                   const SizedBox(height: marginSmall),
                   Text(
                     'Foods:',
-                    style: robotoMedium.copyWith(fontSize: 14),
+                    style: openSansMedium.copyWith(fontSize: 14),
                   ),
                   Wrap(
                     children: widget.restaurant.menus.foods
@@ -147,7 +146,7 @@ class _RestaurantDetailViewState extends State<RestaurantDetailView> {
                   ),
                   Text(
                     'Drinks:',
-                    style: robotoMedium.copyWith(fontSize: 14),
+                    style: openSansMedium.copyWith(fontSize: 14),
                   ),
                   Wrap(
                     children: widget.restaurant.menus.drinks
