@@ -1,24 +1,18 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/app/models/restaurant_list.dart';
+import 'package:provider/provider.dart';
+import 'package:restaurant_app/app/provider/restaurant_provider.dart';
 import 'package:restaurant_app/app/theme/colors.dart';
 import 'package:restaurant_app/app/theme/fonts.dart';
 import 'package:restaurant_app/app/theme/sizes.dart';
 import 'package:restaurant_app/app/views/search_view.dart';
+import 'package:restaurant_app/app/widgets/custom_loading_widget.dart';
 import 'package:restaurant_app/app/widgets/error_state_widget.dart';
 import 'package:restaurant_app/app/widgets/restaurant_list_item.dart';
 
-class HomeView extends StatefulWidget {
+class HomeView extends StatelessWidget {
   static const routeName = '/home-view';
   const HomeView({super.key});
 
-  @override
-  State<HomeView> createState() => _HomeViewState();
-}
-
-class _HomeViewState extends State<HomeView> {
-  late RestaurantList restaurantList;
   @override
   Widget build(BuildContext context) {
     double maxWidth = getMaxWidth(context);
@@ -41,7 +35,6 @@ class _HomeViewState extends State<HomeView> {
                     Navigator.pushNamed(
                       context,
                       SearchView.routeName,
-                      arguments: restaurantList,
                     );
                   },
                   child: const CircleAvatar(
@@ -60,39 +53,32 @@ class _HomeViewState extends State<HomeView> {
               'Rekomendasi restoran lokal favorit',
               style: openSansLight.copyWith(fontSize: 16),
             ),
-            FutureBuilder<String>(
-                future: DefaultAssetBundle.of(context)
-                    .loadString('assets/json/local_restaurant.json'),
-                builder: (context, snapshot) {
-                  if (snapshot.hasError) {
-                    return ErrorStateWidget(message: snapshot.error.toString());
-                  }
-                  if (!snapshot.hasData) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-                  restaurantList = parseRestaurantList(snapshot.data);
+            Consumer<RestaurantProvider>(builder: (context, state, _) {
+              switch (state.state) {
+                case ResultState.loading:
+                  return const CustomLoadingWidget();
+                case ResultState.hasData:
                   return Column(
-                    children: restaurantList.restaurants
-                        .map((restaurant) => RestaurantListItem(
+                    children: state.restaurantList
+                        .map(
+                          (restaurant) => RestaurantListItem(
                               maxWidth: maxWidth,
                               maxHeight: maxHeight,
-                              restaurant: restaurant,
-                            ))
+                              restaurant: restaurant),
+                        )
                         .toList(),
                   );
-                }),
+                case ResultState.noData:
+                  return ErrorStateWidget(message: state.message);
+                case ResultState.error:
+                  return ErrorStateWidget(message: state.message);
+                default:
+                  return ErrorStateWidget(message: state.message);
+              }
+            }),
           ],
         ),
       ),
     );
-  }
-
-  RestaurantList parseRestaurantList(String? json) {
-    if (json == null) return RestaurantList(restaurants: []);
-
-    final Map<String, dynamic> parsedJson = jsonDecode(json);
-    debugPrint('Parsed Json: $parsedJson');
-
-    return RestaurantList.fromJson(parsedJson);
   }
 }

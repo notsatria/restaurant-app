@@ -1,42 +1,43 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/app/models/restaurant_list.dart';
+import 'package:provider/provider.dart';
+import 'package:restaurant_app/app/provider/search_restaurant_provider.dart';
 import 'package:restaurant_app/app/theme/colors.dart';
 import 'package:restaurant_app/app/theme/sizes.dart';
+import 'package:restaurant_app/app/widgets/custom_loading_widget.dart';
+import 'package:restaurant_app/app/widgets/error_state_widget.dart';
 import 'package:restaurant_app/app/widgets/restaurant_list_item.dart';
 import 'package:restaurant_app/app/widgets/search_text_field.dart';
 
-class SearchView extends StatefulWidget {
+class SearchView extends StatelessWidget {
   static const routeName = '/search-view';
-  final RestaurantList restaurantList;
-  const SearchView({super.key, required this.restaurantList});
+  const SearchView({
+    super.key,
+  });
 
-  @override
-  State<SearchView> createState() => _SearchViewState();
-}
-
-class _SearchViewState extends State<SearchView> {
-  final searchTextController = TextEditingController();
-  List<Restaurant> searchResult = [];
   @override
   Widget build(BuildContext context) {
     double maxWidth = getMaxWidth(context);
     double maxHeight = getMaxHeight(context);
+    final searchRestaurantProvider =
+        Provider.of<SearchRestaurantProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 100,
         title: SearchTextField(
-          controller: searchTextController,
+          controller: searchRestaurantProvider.searchTextController,
           hintText: 'Cari Restoran',
-          onChanged: (value) {
-            setState(() {
-              searchResult = filterRestaurants(value);
-            });
+          onChanged: (query) {
+            searchRestaurantProvider.searchRestaurant(query.toLowerCase());
           },
         ),
       ),
       body: SafeArea(
-        child: searchResult.isEmpty
-            ? const Center(
+        child: Consumer<SearchRestaurantProvider>(builder: (context, state, _) {
+          switch (state.state) {
+            case ResultState.loading:
+              return const CustomLoadingWidget();
+            case ResultState.noData:
+              return const Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -50,10 +51,11 @@ class _SearchViewState extends State<SearchView> {
                     Text('Data pencarian belum ditemukan'),
                   ],
                 ),
-              )
-            : ListView(
+              );
+            case ResultState.hasData:
+              return ListView(
                 padding: const EdgeInsets.all(marginLarge),
-                children: searchResult
+                children: state.searchResult
                     .map(
                       (restaurant) => RestaurantListItem(
                           maxWidth: maxWidth,
@@ -61,18 +63,14 @@ class _SearchViewState extends State<SearchView> {
                           restaurant: restaurant),
                     )
                     .toList(),
-              ),
+              );
+            case ResultState.error:
+              return ErrorStateWidget(message: state.message);
+            default:
+              return ErrorStateWidget(message: state.message);
+          }
+        }),
       ),
     );
-  }
-
-  List<Restaurant> filterRestaurants(String value) {
-    return widget.restaurantList.restaurants
-        .where(
-          (restaurant) => restaurant.name.toLowerCase().contains(
-                value.toLowerCase(),
-              ),
-        )
-        .toList();
   }
 }
