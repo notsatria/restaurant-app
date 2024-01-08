@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:restaurant_app/app/data/api/api_services.dart';
 import 'package:restaurant_app/app/data/models/restaurant.dart';
+import 'package:restaurant_app/app/data/models/restaurant_detail.dart';
+import 'package:restaurant_app/app/provider/database_provider.dart';
 import 'package:restaurant_app/app/provider/restaurant_detail_provider.dart';
 import 'package:restaurant_app/app/theme/colors.dart';
 import 'package:restaurant_app/app/theme/fonts.dart';
 import 'package:restaurant_app/app/theme/sizes.dart';
 import 'package:restaurant_app/app/utils/asset.dart';
+import 'package:restaurant_app/app/utils/result_state.dart';
 import 'package:restaurant_app/app/widgets/custom_loading_widget.dart';
 import 'package:restaurant_app/app/widgets/error_state_widget.dart';
 
@@ -31,9 +34,26 @@ class RestaurantDetailView extends StatelessWidget {
               case ResultState.hasData:
                 return _buildRestaurantDetailView(state, maxHeight, context);
               case ResultState.error:
-                return ErrorStateWidget(message: state.message);
+                return ErrorStateWidget(
+                  message: state.message,
+                  onTap: () {
+                    state.getRestaurantDetailById(restaurantId);
+                  },
+                );
+              case ResultState.noData:
+                return ErrorStateWidget(
+                  message: state.message,
+                  onTap: () {
+                    state.getRestaurantDetailById(restaurantId);
+                  },
+                );
               default:
-                return ErrorStateWidget(message: state.message);
+                return ErrorStateWidget(
+                  message: state.message,
+                  onTap: () {
+                    state.getRestaurantDetailById(restaurantId);
+                  },
+                );
             }
           }),
         ),
@@ -73,6 +93,47 @@ class RestaurantDetailView extends StatelessWidget {
                 ],
               ),
             ),
+            actions: [
+              Consumer<DatabaseProvider>(
+                builder: (context, state, _) {
+                  final restaurant = Restaurant(
+                    id: restaurantId,
+                    name: restaurantDetailProvider.restaurantDetail.name,
+                    description:
+                        restaurantDetailProvider.restaurantDetail.description,
+                    pictureId:
+                        restaurantDetailProvider.restaurantDetail.pictureId,
+                    city: restaurantDetailProvider.restaurantDetail.city,
+                    rating: restaurantDetailProvider.restaurantDetail.rating,
+                  );
+                  return FutureBuilder(
+                    future: state.isFavorite(restaurantId),
+                    builder: (context, snapshot) {
+                      bool isFavorite = snapshot.data ?? false;
+                      return GestureDetector(
+                        onTap: () {
+                          if (isFavorite) {
+                            state.removeFavorite(restaurantId, context);
+                          } else {
+                            state.addFavorite(restaurant, context);
+                          }
+                        },
+                        child: CircleAvatar(
+                          backgroundColor: Colors.white,
+                          child: Icon(
+                            isFavorite
+                                ? Icons.favorite_rounded
+                                : Icons.favorite_outline_rounded,
+                            color: errorColor,
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+              const SizedBox(width: marginMedium),
+            ],
           ),
         ];
       },
