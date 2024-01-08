@@ -9,25 +9,27 @@ class ErrorStateWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.error_outline_rounded,
-              size: 100,
-              color: errorColor,
-            ),
-            const SizedBox(height: marginSmall),
-            Text(
-              message,
-              textAlign: TextAlign.center,
-              style: openSansMedium,
-            ),
-          ],
-        ),
+    double maxWidth = getMaxWidth(context);
+    double maxHeight = getMaxHeight(context);
+    return SizedBox(
+      height: maxHeight / 1.4,
+      width: maxWidth,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          const Icon(
+            Icons.error_outline_rounded,
+            size: 100,
+            color: errorColor,
+          ),
+          const SizedBox(height: marginSmall),
+          Text(
+            message,
+            textAlign: TextAlign.center,
+            style: openSansMedium,
+          ),
+        ],
       ),
     );
   }

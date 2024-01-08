@@ -1,8 +1,12 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:restaurant_app/app/models/restaurant_list.dart';
+import 'package:restaurant_app/app/data/api/api_services.dart';
+import 'package:restaurant_app/app/data/models/restaurant.dart';
+import 'package:restaurant_app/app/provider/restaurant_detail_provider.dart';
 import 'package:restaurant_app/app/theme/colors.dart';
 import 'package:restaurant_app/app/theme/fonts.dart';
 import 'package:restaurant_app/app/theme/sizes.dart';
+import 'package:restaurant_app/app/utils/asset.dart';
 import 'package:restaurant_app/app/views/restaurant_detail_view.dart';
 
 class RestaurantListItem extends StatelessWidget {
@@ -21,10 +25,12 @@ class RestaurantListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
+        RestaurantDetailProvider(
+            apiService: ApiService(), restaurantId: restaurant.id);
         Navigator.pushNamed(
           context,
           RestaurantDetailView.routeName,
-          arguments: restaurant,
+          arguments: restaurant.id,
         );
       },
       child: Container(
@@ -46,14 +52,16 @@ class RestaurantListItem extends StatelessWidget {
               tag: restaurant.id,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(roundedLarge),
-                child: Image.network(
-                  restaurant.pictureId,
+                child: CachedNetworkImage(
+                  imageUrl:
+                      NetworkAsset.restaurantMediumRes + restaurant.pictureId,
                   fit: BoxFit.cover,
                   width: maxWidth / 3,
                   height: maxWidth / 3,
-                  errorBuilder: (context, error, stackTrace) => const Icon(
+                  errorWidget: (context, error, stackTrace) => const Icon(
                     Icons.error_outline_outlined,
                     color: errorColor,
+                    size: 60,
                   ),
                 ),
               ),

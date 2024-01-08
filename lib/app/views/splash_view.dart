@@ -29,7 +29,7 @@ class _SplashViewState extends State<SplashView> {
       body: SafeArea(
         child: Center(
           child: Image.asset(
-            Asset.splash,
+            LocalAsset.splash,
             width: maxWidth / 2,
           ),
         ),
