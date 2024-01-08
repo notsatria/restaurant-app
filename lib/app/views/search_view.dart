@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:restaurant_app/app/provider/search_restaurant_provider.dart';
 import 'package:restaurant_app/app/theme/colors.dart';
 import 'package:restaurant_app/app/theme/sizes.dart';
+import 'package:restaurant_app/app/utils/result_state.dart';
 import 'package:restaurant_app/app/widgets/custom_loading_widget.dart';
 import 'package:restaurant_app/app/widgets/error_state_widget.dart';
 import 'package:restaurant_app/app/widgets/restaurant_list_item.dart';
@@ -65,6 +66,10 @@ class SearchView extends StatelessWidget {
                     .toList(),
               );
             case ResultState.error:
+              return ErrorStateWidget(
+                message: state.message,
+              );
+            case ResultState.noData:
               return ErrorStateWidget(message: state.message);
             default:
               return ErrorStateWidget(message: state.message);

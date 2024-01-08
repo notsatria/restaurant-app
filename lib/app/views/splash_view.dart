@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:restaurant_app/app/theme/colors.dart';
 import 'package:restaurant_app/app/theme/sizes.dart';
 import 'package:restaurant_app/app/utils/asset.dart';
-import 'package:restaurant_app/app/views/home_view.dart';
+import 'package:restaurant_app/app/views/main_view.dart';
 
 class SplashView extends StatefulWidget {
   static const routeName = '/splash-view';
@@ -17,7 +17,7 @@ class _SplashViewState extends State<SplashView> {
   void initState() {
     super.initState();
     Future.delayed(const Duration(seconds: 2), () {
-      Navigator.pushReplacementNamed(context, HomeView.routeName);
+      Navigator.pushReplacementNamed(context, MainView.routeName);
     });
   }
 

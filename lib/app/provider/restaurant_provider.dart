@@ -3,8 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:restaurant_app/app/data/api/api_services.dart';
 import 'package:restaurant_app/app/data/models/restaurant.dart';
-
-enum ResultState { loading, noData, hasData, error }
+import 'package:restaurant_app/app/utils/result_state.dart';
 
 class RestaurantProvider extends ChangeNotifier {
   final ApiService apiService;
@@ -12,7 +11,7 @@ class RestaurantProvider extends ChangeNotifier {
   RestaurantProvider({required this.apiService}) {
     _restaurantList = [];
     _state = ResultState.loading;
-    _fetchAllRestaurant();
+    fetchAllRestaurant();
   }
 
   late List<Restaurant> _restaurantList;
@@ -25,7 +24,7 @@ class RestaurantProvider extends ChangeNotifier {
 
   ResultState get state => _state;
 
-  Future<dynamic> _fetchAllRestaurant() async {
+  Future<dynamic> fetchAllRestaurant() async {
     try {
       _state = ResultState.loading;
       notifyListeners();
