@@ -2,6 +2,7 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:http/http.dart' as http;
 import 'package:restaurant_app/app/data/api/api_services.dart';
 import 'package:restaurant_app/app/data/notifications/notification_helper.dart';
 
@@ -31,7 +32,7 @@ class BackgroundService {
     FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
         FlutterLocalNotificationsPlugin();
 
-    var restaurants = await ApiService().getAllRestaurantList();
+    var restaurants = await ApiService().getAllRestaurantList(http.Client());
 
     restaurants.shuffle();
 

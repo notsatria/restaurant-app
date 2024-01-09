@@ -38,18 +38,22 @@ class SearchView extends StatelessWidget {
             case ResultState.loading:
               return const CustomLoadingWidget();
             case ResultState.noData:
-              return const Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+              return Center(
+                child: ListView(
+                  shrinkWrap: true,
                   children: [
-                    Icon(
+                    const Icon(
                       Icons.search_off_rounded,
                       size: 100,
                       color: errorColor,
                     ),
-                    SizedBox(height: marginSmall),
-                    Text('Data pencarian belum ditemukan'),
+                    const SizedBox(height: marginSmall),
+                    SizedBox(
+                      width: maxWidth / 1.5,
+                      child: const Center(
+                        child: Text('Data pencarian belum ditemukan'),
+                      ),
+                    ),
                   ],
                 ),
               );
