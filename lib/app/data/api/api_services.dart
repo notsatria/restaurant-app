@@ -15,8 +15,8 @@ class ApiService {
   // POST - Send Review with Body
   static const String _postReview = '/review';
 
-  Future<List<Restaurant>> getAllRestaurantList() async {
-    final response = await http.get(Uri.parse(_baseUrl + _getList));
+  Future<List<Restaurant>> getAllRestaurantList(http.Client client) async {
+    final response = await client.get(Uri.parse(_baseUrl + _getList));
     final responseBody = jsonDecode(response.body);
     print('Response Status Code --> ${response.statusCode}');
     if (response.statusCode == 200) {
@@ -29,8 +29,9 @@ class ApiService {
     }
   }
 
-  Future<RestaurantDetail> getRestaurantDetail(String restaurantId) async {
-    final response = await http
+  Future<RestaurantDetail> getRestaurantDetail(
+      String restaurantId, http.Client client) async {
+    final response = await client
         .get(Uri.parse(_baseUrl + _getRestaurantDetail + restaurantId));
     final responseBody = jsonDecode(response.body);
     if (response.statusCode == 200) {
@@ -40,9 +41,10 @@ class ApiService {
     }
   }
 
-  Future<List<Restaurant>> getSearchResult(String query) async {
+  Future<List<Restaurant>> getSearchResult(
+      String query, http.Client client) async {
     final response =
-        await http.get(Uri.parse(_baseUrl + _getSearchRestaurant + query));
+        await client.get(Uri.parse(_baseUrl + _getSearchRestaurant + query));
     final responseBody = jsonDecode(response.body);
     if (response.statusCode == 200) {
       print('Response Body on Get List --> ${response.body}');
@@ -54,7 +56,7 @@ class ApiService {
     }
   }
 
-  Future<List<CustomerReview>> postReview(
+  Future<List<CustomerReview>> postReview(http.Client client,
       {required String restaurantId,
       required String name,
       required String review}) async {
@@ -64,7 +66,7 @@ class ApiService {
       'review': review,
     };
     final response =
-        await http.post(Uri.parse(_baseUrl + _postReview), body: body);
+        await client.post(Uri.parse(_baseUrl + _postReview), body: body);
 
     final responseBody = jsonDecode(response.body);
 

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:restaurant_app/app/data/api/api_services.dart';
@@ -45,7 +46,7 @@ class RestaurantDetailProvider extends ChangeNotifier {
       _state = ResultState.loading;
       notifyListeners();
       final restaurantDetail =
-          await apiService.getRestaurantDetail(restaurantId);
+          await apiService.getRestaurantDetail(restaurantId, http.Client());
 
       _state = ResultState.hasData;
       notifyListeners();
@@ -81,7 +82,7 @@ class RestaurantDetailProvider extends ChangeNotifier {
     try {
       _state = ResultState.loading;
       notifyListeners();
-      await apiService.postReview(
+      await apiService.postReview(http.Client(), 
           restaurantId: restaurantId, name: name, review: review);
 
       _state = ResultState.hasData;
